@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Hans Stier">
+<meta name="description" content="Neufound: das AI-Team für den Mittelstand. Ihr Betrieb, neu gefunden. Das Wissen ist da. Neufound setzt es ein.">
+<title>Neufound</title>
+<style>
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:300 700;font-display:swap;src:url(fonts/IBMPlexSans-var.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/IBMPlexMono-400.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/IBMPlexMono-500.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+:root{
+  --ink:#1F2A37; --ink-2:#5B6675; --line:#D9DEE4; --paper:#FFFFFF; --paper-2:#F4F5F7;
+  --copper:#B8672E; --copper-2:#F3E4D8; --copper-dk:#9A5222;
+  --gutter:16px; --maxw:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",-apple-system,"Helvetica Neue",Arial,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+img,svg{max-width:100%}
+a{color:var(--copper-dk)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter)}
+.num,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+h1,h2,h3{margin:0;line-height:1.15;letter-spacing:-0.01em}
+p{margin:0 0 1em}
+.eyebrow{font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:var(--copper);font-weight:600;margin:0 0 14px}
+section{padding:64px 0;border-top:1px solid var(--line)}
+section.alt{background:var(--paper-2)}
+h2{font-size:clamp(26px,4.4vw,38px);font-weight:600;margin-bottom:14px;max-width:22ch}
+.lead{font-size:19px;color:var(--ink-2);max-width:60ch;margin-bottom:36px}
+
+/* Header */
+header.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:2px solid var(--ink)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 24px;padding-top:10px;padding-bottom:10px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand svg{width:56px;height:auto;flex:none;display:block}
+.wm{font-size:28px;letter-spacing:-1.1px;line-height:1}
+.wm .neu{font-weight:300}.wm .found{font-weight:700}
+.desc{font-size:10px;letter-spacing:2.4px;color:var(--ink-2);font-weight:500;margin-top:4px;text-transform:uppercase}
+nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:2px 20px}
+nav a{display:inline-block;padding:6px 0;color:var(--ink);text-decoration:none;font-size:15px;font-weight:500;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{border-bottom-color:var(--copper)}
+
+/* Hero */
+.hero{padding:72px 0 64px;border-top:0}
+.hero h1{font-size:clamp(34px,7vw,64px);font-weight:300;max-width:16ch;letter-spacing:-0.025em}
+.hero h1 b{font-weight:700}
+.hero .sub{font-size:clamp(20px,3vw,26px);font-weight:500;margin:22px 0 18px;color:var(--ink)}
+.hero .sub span{border-bottom:3px solid var(--copper)}
+.hero p.body{max-width:58ch;color:var(--ink-2);font-size:18px}
+.btn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;font-weight:600;padding:14px 26px;border-radius:2px;margin-top:10px;border:2px solid var(--ink)}
+.btn:hover,.btn:focus-visible{background:var(--copper);border-color:var(--copper)}
+.btn.ghost{background:transparent;color:var(--ink);margin-left:8px}
+.btn.ghost:hover{color:#fff}
+
+/* Cards */
+.cards{display:grid;grid-template-columns:1fr;gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--copper);padding:24px 22px}
+section.alt .card{background:#fff}
+.card h3{font-size:22px;font-weight:600;margin-bottom:4px}
+.card h3 span{font-weight:300}
+.card .tag{font-size:13px;color:var(--ink-2);margin-bottom:14px}
+.card ul{margin:0;padding:0;list-style:none}
+.card li{padding:7px 0;border-top:1px solid var(--line);font-size:16px}
+.card li b{font-weight:600}
+.card li span{color:var(--ink-2)}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:1fr;gap:0;counter-reset:s;border-top:2px solid var(--ink)}
+.step{padding:22px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:44px 1fr;gap:0 12px}
+.step .n{font-family:"IBM Plex Mono",monospace;color:var(--copper);font-size:26px;font-weight:500;line-height:1.1}
+.step h3{font-size:21px;font-weight:600;margin-bottom:6px}
+.step p{color:var(--ink-2);margin:0}
+.step .src{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--ink);background:var(--copper-2);display:inline-block;padding:2px 8px;margin-top:10px}
+
+/* Principles */
+.principles{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.principles li{padding:20px 0;border-bottom:1px solid var(--line);display:grid;gap:4px}
+.principles b{font-size:22px;font-weight:600}
+.principles b::after{content:"";}
+.principles span{color:var(--ink-2);max-width:62ch}
+
+/* Reference */
+.case{max-width:70ch;color:var(--ink);margin-bottom:28px}
+.case .lbl{font-weight:600}
+.kpis{display:grid;grid-template-columns:1fr;gap:12px}
+.kpi{background:var(--ink);color:#fff;padding:22px;border-bottom:4px solid var(--copper)}
+.kpi .v{font-family:"IBM Plex Mono",monospace;font-size:clamp(28px,6vw,36px);font-weight:500;line-height:1.1}
+.kpi .t{font-size:15px;color:#C9D0D8;margin-top:6px}
+.table-wrap{margin:28px 0 8px}
+.rowtab{width:100%;border-collapse:collapse;font-size:16px}
+.rowtab th,.rowtab td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.rowtab th{font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.rowtab td.num{white-space:nowrap}
+.note{font-size:15px;color:var(--ink-2);max-width:66ch}
+
+/* Für wen */
+.who{display:grid;grid-template-columns:1fr;gap:12px;list-style:none;margin:0;padding:0}
+.who li{border:1px solid var(--line);padding:18px 20px;background:#fff}
+.who b{display:block;font-size:18px;font-weight:600;margin-bottom:4px}
+.who span{color:var(--ink-2);font-size:16px}
+
+/* Preise */
+.price{width:100%;border-collapse:collapse;font-size:16px;background:#fff}
+.price th,.price td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.price thead th{font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:#fff;background:var(--ink);font-weight:600}
+.price td.v{font-family:"IBM Plex Mono",monospace;font-weight:500;white-space:nowrap}
+.price td.d{color:var(--ink-2)}
+.price tr.grp th{background:var(--copper-2);color:var(--ink);font-size:12px;letter-spacing:1.6px;text-transform:uppercase;padding:8px 14px}
+.price-note{margin-top:16px}
+
+/* Kontakt */
+.contact{display:grid;gap:20px;grid-template-columns:1fr}
+.contact .mail{font-family:"IBM Plex Mono",monospace;font-size:clamp(18px,4.6vw,26px);font-weight:500}
+.contact .mail a{color:var(--ink);text-decoration:none;border-bottom:3px solid var(--copper)}
+.imprint{font-size:15px;color:var(--ink-2)}
+.imprint b{color:var(--ink);font-weight:600}
+
+footer{background:var(--ink);color:#C9D0D8;padding:28px 0;font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px}
+footer a{color:#fff;margin-right:16px}
+
+@media (min-width:700px){
+  :root{--gutter:24px}
+  .cards{grid-template-columns:repeat(3,1fr)}
+  .kpis{grid-template-columns:repeat(3,1fr)}
+  .who{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr 1fr}
+  .step{padding:24px 24px 24px 0}
+  .step:nth-child(even){padding-left:24px;border-left:1px solid var(--line)}
+  .principles li{grid-template-columns:minmax(220px,1fr) 2fr;gap:24px;align-items:baseline}
+  .contact{grid-template-columns:1.2fr 1fr}
+  section{padding:84px 0}
+  .brand svg{width:64px}
+}
+@media (min-width:1000px){
+  .who{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:699px){
+  /* Preistabelle als gestapelte Zeilen */
+  .price thead{display:none}
+  .price,.price tbody,.price tr,.price th,.price td{display:block;width:100%}
+  .price tr{border-bottom:1px solid var(--line);padding:10px 0}
+  .price tr.grp{padding:0;border:0}
+  .price td,.price th{border:0;padding:2px 14px}
+  .price td.v{padding-top:0}
+  .btn.ghost{margin-left:0}
+  .rowtab td.num{white-space:normal}
+}
+@media (max-width:480px){
+  .wm{font-size:24px}
+  nav ul{gap:0 16px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Neufound, zum Seitenanfang">
+      <svg viewBox="20 28 110 84" aria-hidden="true" focusable="false">
+        <defs><clipPath id="nf-lens"><circle cx="90" cy="70" r="38"/></clipPath></defs>
+        <circle cx="62" cy="70" r="38" fill="none" stroke="#1F2A37" stroke-width="5"/>
+        <circle cx="90" cy="70" r="38" fill="none" stroke="#1F2A37" stroke-width="5"/>
+        <circle cx="62" cy="70" r="38" fill="#B8672E" clip-path="url(#nf-lens)"/>
+      </svg>
+      <span>
+        <span class="wm" style="display:block"><span class="neu">neu</span><span class="found">found</span></span>
+        <span class="desc" style="display:block">AI-Team für den Mittelstand</span>
+      </span>
+    </a>
+    <nav aria-label="Hauptnavigation">
+      <ul>
+        <li><a href="#produkt">Produkt</a></li>
+        <li><a href="#ablauf">So funktioniert es</a></li>
+        <li><a href="#referenz">Referenzfall</a></li>
+        <li><a href="#preise">Preise</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">AI-Team für den Mittelstand</p>
+    <h1><b>Neufound.</b> Ihr Betrieb, neu gefunden.</h1>
+    <p class="sub"><span>Das Wissen ist da.</span> Neufound setzt es ein.</p>
+    <p class="body">Ihr AI-Team arbeitet mit dem, was schon da ist: Mails, Akten, Chats, Pläne. Es findet, was Ihr Betrieb einmal gewusst hat, legt es mit Quelle vor und nimmt Ihren Leuten die Arbeit ab, die sich wiederholt. Entscheiden bleibt bei Ihnen.</p>
+    <a class="btn" href="mailto:kontakt@neufound.ai?subject=Gespr%C3%A4ch%20anfragen">Gespräch anfragen</a>
+    <a class="btn ghost" href="#ablauf">So funktioniert es</a>
+  </div>
+</section>
+
+<section id="produkt" class="alt">
+  <div class="wrap">
+    <p class="eyebrow">Produkt</p>
+    <h2>Drei Ebenen, ein Betrieb.</h2>
+    <p class="lead">Neufound besteht aus dem Team, den Werkzeugen und dem Archiv. Jede Ebene ist einzeln verständlich und arbeitet mit den anderen am selben Stand.</p>
+    <div class="cards">
+      <article class="card">
+        <h3><span>Neufound</span> Team</h3>
+        <p class="tag">Das AI-Team je Kunde: Kollegen mit Rolle, nicht Bots.</p>
+        <ul>
+          <li><b>Archivar</b> <span>findet und ordnet, was vorhanden ist</span></li>
+          <li><b>Assistent</b> <span>bereitet vor, entwirft, erinnert</span></li>
+          <li><b>Controller</b> <span>rechnet nach, vergleicht, meldet Abweichungen</span></li>
+          <li><b>Prüfer</b> <span>prüft Belege, Fristen und Angaben gegen die Quelle</span></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3><span>Neufound</span> Werk</h3>
+        <p class="tag">Deterministische Werkzeuge: gleiche Eingabe, gleiches Ergebnis.</p>
+        <ul>
+          <li><b>Suche</b> <span>über alle angebundenen Systeme</span></li>
+          <li><b>Aufgaben</b> <span>mit Träger, Frist und Stand</span></li>
+          <li><b>Fristen</b> <span>und Wiedervorlage, die wirklich wieder vorliegt</span></li>
+          <li><b>Belege</b> <span>jede Aussage mit Fundstelle</span></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3><span>Neufound</span> Archiv</h3>
+        <p class="tag">Das Gedächtnis des Betriebs, das mit jedem Nutzer wächst.</p>
+        <ul>
+          <li><b>Quellspiegel</b> <span>aller angebundenen Systeme, nur lesbar</span></li>
+          <li><b>Wissensschicht</b> <span>was Ihre Leute ablegen, steht sofort allen im Betrieb zur Verfügung</span></li>
+          <li><b>Nachvollziehbar</b> <span>Autor und Datum an jedem Eintrag</span></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="ablauf">
+  <div class="wrap">
+    <p class="eyebrow">So funktioniert es</p>
+    <h2>Vier Schritte, vom ersten Anschluss bis zum Dazulernen.</h2>
+    <p class="lead">Der Umzug ins AI-Zeitalter, ohne Umzugskisten: Ihre Systeme bleiben, wie sie sind.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>Anbinden</h3>
+          <p>Neufound liest, was Sie schon nutzen. Es schreibt nicht in Ihre Systeme zurück.</p>
+          <span class="src">Outlook/Exchange · ownCloud/SharePoint/Drive · Slack/Teams · Zoom · Planportale · nur lesend</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>Wiederfinden</h3>
+          <p>Eine Suche über alles. Weniger Suchen, mehr Finden. Jede Antwort nennt ihre Quelle, damit Sie nachsehen können.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>Arbeiten</h3>
+          <p>Morgenbrief, Antwortentwürfe, Fristen, Wiedervorlage, Wochenmemo. Ihr Team erreicht das AI-Team per WhatsApp und in der Web-App.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <div>
+          <h3>Dazulernen</h3>
+          <p>Jeder Nutzer legt Wissen ab. Nichts wird gelöscht, Berichtigungen kommen als neuer Eintrag. Was einer weiß, wissen sofort alle im Betrieb.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <p class="eyebrow">Grundsätze</p>
+    <h2>Drei Zeilen, auf die Sie sich verlassen können.</h2>
+    <ul class="principles" style="margin-top:28px">
+      <li><b>Zugang statt Software.</b><span>Jeder Kunde bekommt ein eigenes, abgeschottetes Projekt. Kein Code, kein Datenbankpasswort bei Ihnen. Export Ihrer Daten jederzeit.</span></li>
+      <li><b>Beleg statt Behauptung.</b><span>Jede Antwort zeigt ihre Quelle und ihre Kosten.</span></li>
+      <li><b>Der Mensch entscheidet.</b><span>Nichts wird gesendet, unterschrieben oder gelöscht, ohne dass Sie es veranlassen.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="referenz">
+  <div class="wrap">
+    <p class="eyebrow">Referenzfall</p>
+    <h2>Ein Projektentwickler in Berlin.</h2>
+    <p class="case">Berliner Projektentwickler, rund 30 Mitarbeitende, fünf Abteilungen. Ausgangsmessung einer externen Prozessanalyse (Februar 2026):</p>
+    <div class="table-wrap">
+      <table class="rowtab">
+        <thead><tr><th scope="col">Abteilung</th><th scope="col">Prozess</th><th scope="col">Aufwand je Woche</th></tr></thead>
+        <tbody>
+          <tr><td>Backoffice</td><td>Ablage und Diktatverarbeitung</td><td class="num">30 bis 38 Stunden</td></tr>
+          <tr><td>Accounting</td><td>Rechnungsstempel und Zahlungslauf</td><td class="num">12 bis 19 Stunden</td></tr>
+          <tr><td>Architektur</td><td>Planablage und Angebotsprüfung</td><td class="num">4 bis 10 Stunden</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="case" style="margin-top:20px">Ziel der Einführung: zehn Vollzeitstellen weniger bei gleicher Leistung. Die Wirkung wird je Prozess in Stunden vorher/nachher gemessen und veröffentlicht, sobald die Einführung abgeschlossen ist.</p>
+    <div class="kpis">
+      <div class="kpi"><div class="v">30–38 h/Woche</div><div class="t">Backoffice-Mechanik</div></div>
+      <div class="kpi"><div class="v">−10 FTE</div><div class="t">Ziel der Einführung</div></div>
+      <div class="kpi"><div class="v">100 %</div><div class="t">der Antworten mit Quellenangabe</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <p class="eyebrow">Für wen</p>
+    <h2>Betriebe, die mehr wissen, als sie heute nutzen.</h2>
+    <ul class="who" style="margin-top:28px">
+      <li><b>Mittelständische Betriebe</b><span>10 bis 100 Mitarbeitende</span></li>
+      <li><b>Bauabteilungen und Hausverwaltungen</b><span>viele Akten, viele Fristen, viele Gewerke</span></li>
+      <li><b>Vereine</b><span>Wissen, das bei Ehrenamtlichen liegt und mit ihnen geht</span></li>
+      <li><b>Betriebe in der Nachfolge</b><span>Refounding: neu gegründet auf dem, was den Betrieb trägt</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="preise">
+  <div class="wrap">
+    <p class="eyebrow">Preise</p>
+    <h2>Ein Grundentgelt, Plätze nach Rolle.</h2>
+    <p class="lead">Alle Preise netto, zuzüglich gesetzlicher Umsatzsteuer.</p>
+    <table class="price">
+      <thead><tr><th scope="col">Position</th><th scope="col">Preis</th><th scope="col">Bedingung</th></tr></thead>
+      <tbody>
+        <tr class="grp"><th colspan="3" scope="colgroup">Laufender Betrieb</th></tr>
+        <tr><th scope="row">Grundentgelt</th><td class="v">490 € je Monat</td><td class="d">je Betrieb</td></tr>
+        <tr><th scope="row">Platz Leser</th><td class="v">29 € je Monat</td><td class="d">je Platz</td></tr>
+        <tr><th scope="row">Platz Nutzer</th><td class="v">79 € je Monat</td><td class="d">je Platz</td></tr>
+        <tr><th scope="row">Platz Admin</th><td class="v">129 € je Monat</td><td class="d">je Platz</td></tr>
+        <tr><th scope="row">Laufzeit und Zahlung</th><td class="v">12 Monate</td><td class="d">Vorauskasse</td></tr>
+        <tr><th scope="row">Fremdleistungen</th><td class="v">im Preis</td><td class="d">Hosting, Modellbudget und Messenger bis zum vereinbarten Deckel; darüber zu Selbstkosten plus 30 %</td></tr>
+        <tr class="grp"><th colspan="3" scope="colgroup">Einführung und Pflege</th></tr>
+        <tr><th scope="row">Einführung (Enablement)</th><td class="v">ab 25.000 €</td><td class="d">einmalig; Vorauskasse 50 %</td></tr>
+        <tr><th scope="row">Betrieb und Pflege</th><td class="v">500 bis 1.500 € je Monat</td><td class="d">ab Jahr 2</td></tr>
+      </tbody>
+    </table>
+    <p class="note price-note">Die Kosten jeder Antwort sehen Sie dort, wo die Antwort steht.</p>
+  </div>
+</section>
+
+<section id="kontakt" class="alt">
+  <div class="wrap">
+    <p class="eyebrow">Kontakt</p>
+    <h2>Sprechen wir über Ihren Betrieb.</h2>
+    <div class="contact" style="margin-top:28px">
+      <div>
+        <p class="mail"><a href="mailto:kontakt@neufound.ai">kontakt@neufound.ai</a></p>
+        <p class="note">Schreiben Sie uns kurz, was Ihr Betrieb tut und wo heute am meisten gesucht wird. Wir melden uns mit einem Terminvorschlag.</p>
+        <a class="btn" href="mailto:kontakt@neufound.ai?subject=Gespr%C3%A4ch%20anfragen">Gespräch anfragen</a>
+      </div>
+      <div class="imprint">
+        <p><b>Anbieter</b><br>AINO Betriebsmedizin GmbH, Berlin<br>(Lizenznehmerin)</p>
+        <p><b>Produkt und Marke</b><br>HCS Investment GmbH</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Neufound · AINO Betriebsmedizin GmbH, Berlin · Produkt und Marke: HCS Investment GmbH</span>
+    <span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
