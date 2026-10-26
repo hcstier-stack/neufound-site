@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Hans Stier">
+<meta name="description" content="Neufound bestellen: Plätze wählen, Kosten sehen, per Kreditkarte bezahlen.">
+<title>Bestellen – Neufound</title>
+<link rel="stylesheet" href="recht.css">
+<style>
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/IBMPlexMono-500.woff2) format("woff2")}
+:root{--paper-2:#F4F5F7;--copper-2:#F3E4D8}
+.wrap{max-width:1000px}
+.eyebrow{font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:var(--copper);font-weight:600;margin:0 0 10px}
+.lead{font-size:18px;color:var(--ink-2);max-width:60ch}
+.raster{display:grid;gap:24px;grid-template-columns:1fr;margin-top:28px}
+.karte{border:1px solid var(--line);border-left:4px solid var(--copper);padding:20px 20px 8px;background:#fff}
+.karte h2{margin:0 0 12px;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;color:var(--ink-2)}
+.platz{display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}
+.platz:first-of-type{border-top:0}
+.platz b{font-size:18px;font-weight:600}
+.platz .preis{font-family:"IBM Plex Mono",monospace;font-size:15px;color:var(--ink)}
+.platz .text{grid-column:1/-1;font-size:15px;color:var(--ink-2)}
+.zaehler{display:flex;align-items:center;border:2px solid var(--ink)}
+.zaehler button{width:44px;height:44px;border:0;background:#fff;font-size:22px;cursor:pointer;color:var(--ink)}
+.zaehler button:hover,.zaehler button:focus-visible{background:var(--copper-2)}
+.zaehler input{width:56px;height:44px;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);text-align:center;font-family:"IBM Plex Mono",monospace;font-size:18px;-moz-appearance:textfield}
+.zaehler input::-webkit-outer-spin-button,.zaehler input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.summe{background:var(--ink);color:#fff;padding:22px;border-bottom:4px solid var(--copper)}
+.summe h2{color:#C9D0D8;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;margin:0 0 14px}
+.zeile{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid #3A4757;font-size:15px}
+.zeile span:last-child{font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+.zeile.gross{border-bottom:0;padding-top:12px;font-size:18px;font-weight:600}
+.zeile.gross span:last-child{font-size:22px}
+.klein{font-size:13px;color:#C9D0D8;margin:10px 0 0}
+label.haken{display:flex;gap:12px;align-items:flex-start;font-size:15px;margin:0 0 14px;cursor:pointer}
+label.haken input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--copper)}
+.btn{display:block;width:100%;background:var(--copper);color:#fff;font:inherit;font-weight:600;font-size:17px;padding:16px;border:2px solid var(--copper);cursor:pointer;margin:6px 0 14px}
+.btn:hover,.btn:focus-visible{background:var(--copper-dk);border-color:var(--copper-dk)}
+.btn[disabled]{background:#9AA3AE;border-color:#9AA3AE;cursor:not-allowed}
+.meldung{padding:12px 16px;margin:0 0 16px;font-size:15px;border-left:4px solid #B42318;background:#FDECEA;color:#7A1A12}
+.meldung.info{border-left-color:var(--copper);background:var(--copper-2);color:var(--ink)}
+[hidden]{display:none!important}
+nav.oben{display:flex;gap:18px;font-size:15px}
+nav.oben a{color:var(--ink);text-decoration:none;font-weight:500}
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+@media (min-width:820px){.raster{grid-template-columns:3fr 2fr}.seite{position:sticky;top:20px;align-self:start}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a href="index.html"><span class="neu">neu</span><span class="found">found</span></a><nav class="oben"><a href="index.html#preise">Preise</a><a href="bedingungen.html">Bedingungen</a><a href="index.html#kontakt">Kontakt</a></nav></div></header>
+<main><div class="wrap">
+<p class="eyebrow">Bestellen</p>
+<h1>Neufound für Ihren Betrieb.</h1>
+<p class="lead">Plätze wählen, Kosten sehen, per Kreditkarte bezahlen. Nach dem Zahlungseingang richten wir Ihr eigenes, abgeschottetes Projekt ein; der Admin-Platz bekommt die Einladung per E-Mail.</p>
+
+<div id="testmodus" class="meldung info" hidden><b>Probebetrieb:</b> Die Zahlungsseite läuft im Testmodus des Zahlungsdienstes. Es wird nichts belastet und kein Vertrag geschlossen. Für eine verbindliche Bestellung schreiben Sie bitte an <a href="mailto:kontakt@neufound.ai?subject=Bestellung">kontakt@neufound.ai</a>.</div>
+<div id="abgebrochen" class="meldung info" hidden>Zahlung abgebrochen, es wurde nichts bestellt.</div>
+
+<form id="bestellung" class="raster" novalidate>
+  <div>
+    <section class="karte" aria-labelledby="t-plaetze">
+      <h2 id="t-plaetze">1 · Plätze</h2>
+      <div class="platz">
+        <b>Admin</b><div class="zaehler" data-feld="admin" data-min="1"><button type="button" aria-label="Admin weniger">−</button><input id="admin" name="admin" type="number" inputmode="numeric" min="1" max="500" value="1" aria-label="Admin-Plätze"><button type="button" aria-label="Admin mehr">+</button></div>
+        <span class="text">Verwaltet Zugänge, Rechte und Quellen. Mindestens einer. <span class="preis">129 € / Monat</span></span>
+      </div>
+      <div class="platz">
+        <b>Nutzer</b><div class="zaehler" data-feld="nutzer" data-min="0"><button type="button" aria-label="Nutzer weniger">−</button><input id="nutzer" name="nutzer" type="number" inputmode="numeric" min="0" max="500" value="5" aria-label="Nutzer-Plätze"><button type="button" aria-label="Nutzer mehr">+</button></div>
+        <span class="text">Arbeitet mit Assistent, Entwürfen, Aufgaben und Fristen. <span class="preis">79 € / Monat</span></span>
+      </div>
+      <div class="platz">
+        <b>Leser</b><div class="zaehler" data-feld="leser" data-min="0"><button type="button" aria-label="Leser weniger">−</button><input id="leser" name="leser" type="number" inputmode="numeric" min="0" max="500" value="0" aria-label="Leser-Plätze"><button type="button" aria-label="Leser mehr">+</button></div>
+        <span class="text">Sucht und liest mit Quellenangabe. <span class="preis">29 € / Monat</span></span>
+      </div>
+    </section>
+
+    <section class="karte" aria-labelledby="t-bedingungen" style="margin-top:16px">
+      <h2 id="t-bedingungen">2 · Bestätigen</h2>
+      <label class="haken"><input type="checkbox" id="b2b"> <span>Ich bestelle für ein Unternehmen, eine juristische Person des öffentlichen Rechts oder einen eingetragenen Verein, nicht als Verbraucher.</span></label>
+      <label class="haken"><input type="checkbox" id="bedingungen"> <span>Ich habe die <a href="bedingungen.html" target="_blank" rel="noopener">Lizenz- und Nutzungsbedingungen</a> einschließlich der <a href="bedingungen.html#avv" target="_blank" rel="noopener">Auftragsverarbeitung</a> und die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen.</span></label>
+    </section>
+  </div>
+
+  <aside class="seite">
+    <section class="summe" aria-labelledby="t-summe" aria-live="polite">
+      <h2 id="t-summe">Ihre Bestellung, 12 Monate</h2>
+      <div class="zeile"><span>Grundentgelt</span><span>490 € × 12</span></div>
+      <div class="zeile"><span id="z-plaetze">Plätze</span><span id="v-plaetze">–</span></div>
+      <div class="zeile"><span>Netto je Monat</span><span id="v-monat">–</span></div>
+      <div class="zeile"><span>Netto je Jahr</span><span id="v-netto">–</span></div>
+      <div class="zeile"><span>Umsatzsteuer 19 %</span><span id="v-ust">–</span></div>
+      <div class="zeile gross"><span>Heute fällig</span><span id="v-brutto">–</span></div>
+      <p class="klein">Zahlung jährlich im Voraus per Kreditkarte über Stripe. Kartendaten erhalten wir nie. Einführung und Anbindung der Quellen werden gesondert angeboten.</p>
+    </section>
+    <div id="fehler" class="meldung" role="alert" hidden style="margin-top:16px"></div>
+    <button id="zahlen" class="btn" type="submit" disabled>Weiter zur Zahlung</button>
+    <p style="font-size:14px;color:var(--ink-2)">Lieber erst sprechen? <a href="mailto:kontakt@neufound.ai?subject=Gespr%C3%A4ch%20anfragen">Gespräch anfragen</a></p>
+  </aside>
+</form>
+</div></main>
+<footer><div class="wrap"><a href="index.html">Startseite</a><a href="bedingungen.html">Bedingungen</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></footer>
+<script>
+(function () {
+  var DIENST = "https://neufound-checkout.neufound.workers.dev";
+  var PREIS = { admin: 129, nutzer: 79, leser: 29 }, GRUND = 490, UST = 0.19;
+  var form = document.getElementById("bestellung"), knopf = document.getElementById("zahlen"), fehler = document.getElementById("fehler");
+  var eur = function (v) { return v.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €"; };
+  function zahl(id) { var v = Number(document.getElementById(id).value); return Number.isInteger(v) ? v : NaN; }
+  function werte() { return { admin: zahl("admin"), nutzer: zahl("nutzer"), leser: zahl("leser") }; }
+  function gueltig(w) {
+    var alle = [w.admin, w.nutzer, w.leser];
+    return alle.every(function (n) { return Number.isInteger(n) && n >= 0 && n <= 500; }) && w.admin >= 1 && w.admin + w.nutzer + w.leser <= 500;
+  }
+  function rechnen() {
+    var w = werte(), ok = gueltig(w);
+    var anzahl = ok ? w.admin + w.nutzer + w.leser : 0;
+    var monat = ok ? GRUND + w.admin * PREIS.admin + w.nutzer * PREIS.nutzer + w.leser * PREIS.leser : 0;
+    var netto = monat * 12, ust = Math.round(netto * UST * 100) / 100;
+    document.getElementById("z-plaetze").textContent = ok ? anzahl + (anzahl === 1 ? " Platz" : " Plätze") : "Plätze";
+    document.getElementById("v-plaetze").textContent = ok ? eur((monat - GRUND) * 12) : "–";
+    document.getElementById("v-monat").textContent = ok ? eur(monat) : "–";
+    document.getElementById("v-netto").textContent = ok ? eur(netto) : "–";
+    document.getElementById("v-ust").textContent = ok ? eur(ust) : "–";
+    document.getElementById("v-brutto").textContent = ok ? eur(netto + ust) : "–";
+    var bereit = ok && document.getElementById("b2b").checked && document.getElementById("bedingungen").checked;
+    knopf.disabled = !bereit;
+    knopf.textContent = ok ? "Weiter zur Zahlung · " + eur(netto + ust) : "Weiter zur Zahlung";
+    if (!ok) zeigeFehler("Mindestens ein Admin-Platz, je Platzart 0 bis 500, zusammen höchstens 500."); else zeigeFehler(null);
+  }
+  function zeigeFehler(t) { fehler.hidden = !t; fehler.textContent = t || ""; }
+  Array.prototype.forEach.call(document.querySelectorAll(".zaehler"), function (z) {
+    var feld = z.querySelector("input"), min = Number(z.getAttribute("data-min")), k = z.querySelectorAll("button");
+    k[0].addEventListener("click", function () { feld.value = Math.max(min, (Number(feld.value) || 0) - 1); rechnen(); });
+    k[1].addEventListener("click", function () { feld.value = Math.min(500, (Number(feld.value) || 0) + 1); rechnen(); });
+    feld.addEventListener("input", rechnen);
+  });
+  document.getElementById("b2b").addEventListener("change", rechnen);
+  document.getElementById("bedingungen").addEventListener("change", rechnen);
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (knopf.disabled) return;
+    var w = werte();
+    knopf.disabled = true; knopf.textContent = "Zahlungsseite wird geöffnet …"; zeigeFehler(null);
+    fetch(DIENST + "/checkout", {
+      method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ admin: w.admin, nutzer: w.nutzer, leser: w.leser, b2b: true, bedingungen: true })
+    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (a) {
+        if (a.ok && a.j.url) { window.location.assign(a.j.url); return; }
+        zeigeFehler(a.j.fehler || "Die Zahlungsseite ließ sich nicht öffnen."); rechnen();
+      })
+      .catch(function () { zeigeFehler("Keine Verbindung zum Zahlungsdienst. Bitte später erneut versuchen oder an kontakt@neufound.ai schreiben."); rechnen(); });
+  });
+  if (/[?&]abgebrochen=1/.test(location.search)) document.getElementById("abgebrochen").hidden = false;
+  fetch(DIENST + "/modus").then(function (r) { return r.json(); }).then(function (j) {
+    if (j.modus !== "live") document.getElementById("testmodus").hidden = false;
+  }).catch(function () {});
+  rechnen();
+})();
+</script>
+</body>
+</html>

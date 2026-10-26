@@ -13,5 +13,11 @@ h2{font-size:20px;font-weight:600;margin:32px 0 8px}
 p{margin:0 0 1em}
 a{color:var(--copper-dk)}
 .ph{background:#F3E4D8;padding:0 4px}
+ul{margin:0 0 1em;padding-left:1.2em}li{margin:0 0 .4em}
+.hinweis{border-left:4px solid var(--copper);background:#F4F5F7;padding:12px 16px;margin:0 0 24px;font-size:15px;color:var(--ink-2)}
+.tab{width:100%;border-collapse:collapse;font-size:15px;margin:8px 0 16px}
+.tab th,.tab td{text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tab th{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.tab-rahmen{overflow-x:auto}
 footer{background:var(--ink);color:#C9D0D8;padding:22px 0;font-size:14px}
 footer a{color:#fff;margin-right:16px}
