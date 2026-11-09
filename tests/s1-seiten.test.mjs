@@ -28,7 +28,7 @@ test('Kanalreihenfolge WhatsApp vor Web-App vor SMS', () => {
 });
 test('Effizienzanzeige Werkzeug 0 € gegen Modell', () => assert.match(text['index.html'], /Werkzeug 0 €, Modell in €/));
 test('Datenschutz: Abschnitt WhatsApp, Nummern lückenlos', () => {
-  const nr = [...text['datenschutz.html'].matchAll(/<h2>(\d+)\./g)].map((m) => +m[1]);
+  const nr = [...text['datenschutz.html'].matchAll(/<h2[^>]*>(\d+)\./g)].map((m) => +m[1]);
   assert.deepEqual(nr, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
   assert.match(text['datenschutz.html'], /Nutzung über WhatsApp/);
 });
