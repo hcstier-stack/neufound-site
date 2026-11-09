@@ -11,14 +11,30 @@
 <body>
 <header><div class="wrap"><a href="index.html"><span class="neu">neu</span><span class="found">found</span></a></div></header>
 <main><div class="wrap">
+<div id="art-bezahlt">
 <h1>Danke für Ihre Bestellung.</h1>
-<p>Die Zahlung ist bei uns eingegangen. So geht es weiter:</p>
+<p>Die Zahlung ist bei uns eingegangen bzw. wird vom Zahlungsdienst bestätigt. So geht es weiter:</p>
 <ol>
-<li><b>Beleg:</b> Rechnung und Zahlungsbeleg kommen per E-Mail an die Adresse, die Sie auf der Zahlungsseite angegeben haben.</li>
+<li><b>Beleg:</b> Rechnung und Zahlungsbeleg kommen per E-Mail an die Adresse, die Sie bei der Bestellung angegeben haben.</li>
 <li><b>Einrichtung:</b> Wir richten Ihr eigenes, von anderen Kunden getrenntes Projekt ein, in der Regel binnen zwei Werktagen.</li>
 <li><b>Einladung:</b> Der Admin-Platz bekommt eine Einladung per E-Mail. Mit ihr melden Sie sich an und laden Ihre Kolleginnen und Kollegen ein.</li>
 <li><b>Anbinden:</b> Wir melden uns, um mit Ihnen die Quellen festzulegen, die Neufound lesen soll.</li>
 </ol>
+</div>
+<div id="art-rechnung" hidden>
+<h1>Ihre Rechnung liegt bereit.</h1>
+<p>Sie zahlen auf Rechnung, das heißt immer im Voraus. Erst nach Zahlungseingang beginnt die Einrichtung. So geht es weiter:</p>
+<ol>
+<li><b>Zahlen:</b> Bitte überweisen Sie den Rechnungsbetrag binnen 14 Tagen; die Rechnung haben Sie auf der Bestellseite geöffnet und per E-Mail erhalten.</li>
+<li><b>Einrichtung:</b> Nach Zahlungseingang richten wir Ihr eigenes, von anderen Kunden getrenntes Projekt ein, in der Regel binnen zwei Werktagen.</li>
+<li><b>Einladung:</b> Der Admin-Platz bekommt danach eine Einladung per E-Mail.</li>
+<li><b>Anbinden:</b> Wir melden uns, um mit Ihnen die Quellen festzulegen, die Neufound lesen soll.</li>
+</ol>
+</div>
+<script type="module">
+import { dankeArt } from "./signup.js";
+if (dankeArt(location.search) === "rechnung") { document.getElementById("art-bezahlt").hidden = true; document.getElementById("art-rechnung").hidden = false; }
+</script>
 <p>Fragen? <a href="mailto:kontakt@neufound.ai?subject=Bestellung">kontakt@neufound.ai</a></p>
 <p><a href="index.html">Zur Startseite</a></p>
 </div></main>

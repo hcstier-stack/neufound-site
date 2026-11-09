@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Hans Stier">
-<meta name="description" content="Neufound bestellen: Plätze wählen, Kosten sehen, per Kreditkarte bezahlen.">
+<meta name="description" content="Neufound bestellen: Plätze wählen, Kosten sehen, Vertrag per Klick, Zahlung per Karte, SEPA-Lastschrift oder Rechnung (Vorkasse).">
 <title>Bestellen – Neufound</title>
 <link rel="stylesheet" href="recht.css">
 <style>
@@ -45,6 +45,13 @@ nav.oben{display:flex;gap:18px;font-size:15px}
 nav.oben a{color:var(--ink);text-decoration:none;font-weight:500}
 header .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 @media (min-width:820px){.raster{grid-template-columns:3fr 2fr}.seite{position:sticky;top:20px;align-self:start}}
+input.text,select.text{width:100%;height:44px;border:2px solid var(--ink);padding:0 10px;font:inherit;font-size:16px;background:#fff;margin:0 0 12px}
+label.feld{display:block;font-size:14px;color:var(--ink-2);margin:0 0 4px}
+.zahlart{display:grid;gap:8px;margin:0 0 14px}
+#rechnungsfelder{margin-top:4px}
+.vorschau-tabelle{width:100%;border-collapse:collapse;font-size:14px;margin:0 0 6px}
+.vorschau-tabelle td{padding:4px 0;border-bottom:1px solid #3A4757}
+.vorschau-tabelle td:last-child{text-align:right;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -52,112 +59,164 @@ header .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
 <main><div class="wrap">
 <p class="eyebrow">Bestellen</p>
 <h1>Neufound für Ihren Betrieb.</h1>
-<p class="lead">Plätze wählen, Kosten sehen, per Kreditkarte bezahlen. Nach dem Zahlungseingang richten wir Ihr eigenes, abgeschottetes Projekt ein; der Admin-Platz bekommt die Einladung per E-Mail.</p>
+<p class="lead">Plätze wählen, Kosten sehen, Vertrag per Klick schließen und zahlen. Nach dem Zahlungseingang richten wir Ihr eigenes, abgeschottetes Projekt ein; der Admin-Platz bekommt die Einladung per E-Mail.</p>
 
-<div id="testmodus" class="meldung info" hidden><b>Probebetrieb:</b> Die Zahlungsseite läuft im Testmodus des Zahlungsdienstes. Es wird nichts belastet und kein Vertrag geschlossen. Für eine verbindliche Bestellung schreiben Sie bitte an <a href="mailto:kontakt@neufound.ai?subject=Bestellung">kontakt@neufound.ai</a>.</div>
+<div id="aus" class="meldung info" hidden><b>Online-Bestellung noch nicht freigeschaltet.</b> Bitte schreiben Sie an <a href="mailto:kontakt@neufound.ai?subject=Bestellung">kontakt@neufound.ai</a>; wir senden Ihnen Bestellschein und Bedingungen.</div>
 <div id="abgebrochen" class="meldung info" hidden>Zahlung abgebrochen, es wurde nichts bestellt.</div>
+<div id="rechnung-ok" class="meldung info" hidden><b>Bestellung angenommen.</b> Ihre Rechnung (Vorkasse, Zahlungsziel 14 Tage) liegt hier bereit: <a id="rechnung-link" href="#" rel="noopener">Rechnung öffnen</a>. Die Einrichtung beginnt nach Zahlungseingang. <a href="danke.html?rechnung=1">Wie es weitergeht</a></div>
 
 <form id="bestellung" class="raster" novalidate>
   <div>
     <section class="karte" aria-labelledby="t-plaetze">
       <h2 id="t-plaetze">1 · Plätze</h2>
       <div class="platz">
-        <b>Admin</b><div class="zaehler" data-feld="admin" data-min="1"><button type="button" aria-label="Admin weniger">−</button><input id="admin" name="admin" type="number" inputmode="numeric" min="1" max="500" value="1" aria-label="Admin-Plätze"><button type="button" aria-label="Admin mehr">+</button></div>
+        <b>Admin</b><div class="zaehler" data-min="1"><button type="button" aria-label="Admin weniger">−</button><input id="admin" name="admin" type="number" inputmode="numeric" min="1" max="500" value="1" aria-label="Admin-Plätze"><button type="button" aria-label="Admin mehr">+</button></div>
         <span class="text">Verwaltet Zugänge, Rechte und Quellen. Mindestens einer. <span class="preis">129 € / Monat</span></span>
       </div>
       <div class="platz">
-        <b>Nutzer</b><div class="zaehler" data-feld="nutzer" data-min="0"><button type="button" aria-label="Nutzer weniger">−</button><input id="nutzer" name="nutzer" type="number" inputmode="numeric" min="0" max="500" value="5" aria-label="Nutzer-Plätze"><button type="button" aria-label="Nutzer mehr">+</button></div>
+        <b>Nutzer</b><div class="zaehler" data-min="0"><button type="button" aria-label="Nutzer weniger">−</button><input id="nutzer" name="nutzer" type="number" inputmode="numeric" min="0" max="500" value="5" aria-label="Nutzer-Plätze"><button type="button" aria-label="Nutzer mehr">+</button></div>
         <span class="text">Arbeitet mit Assistent, Entwürfen, Aufgaben und Fristen. <span class="preis">79 € / Monat</span></span>
       </div>
       <div class="platz">
-        <b>Leser</b><div class="zaehler" data-feld="leser" data-min="0"><button type="button" aria-label="Leser weniger">−</button><input id="leser" name="leser" type="number" inputmode="numeric" min="0" max="500" value="0" aria-label="Leser-Plätze"><button type="button" aria-label="Leser mehr">+</button></div>
+        <b>Leser</b><div class="zaehler" data-min="0"><button type="button" aria-label="Leser weniger">−</button><input id="leser" name="leser" type="number" inputmode="numeric" min="0" max="500" value="0" aria-label="Leser-Plätze"><button type="button" aria-label="Leser mehr">+</button></div>
         <span class="text">Sucht und liest mit Quellenangabe. <span class="preis">29 € / Monat</span></span>
       </div>
     </section>
 
-    <section class="karte" aria-labelledby="t-bedingungen" style="margin-top:16px">
-      <h2 id="t-bedingungen">2 · Bestätigen</h2>
-      <label class="haken"><input type="checkbox" id="b2b"> <span>Ich bestelle für ein Unternehmen, eine juristische Person des öffentlichen Rechts oder einen eingetragenen Verein, nicht als Verbraucher.</span></label>
-      <label class="haken"><input type="checkbox" id="bedingungen"> <span>Ich habe die <a href="bedingungen.html" target="_blank" rel="noopener">Lizenz- und Nutzungsbedingungen</a> einschließlich der <a href="bedingungen.html#avv" target="_blank" rel="noopener">Auftragsverarbeitung</a> und die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen.</span></label>
+    <section class="karte" aria-labelledby="t-org" style="margin-top:16px">
+      <h2 id="t-org">2 · Ihre Organisation</h2>
+      <label class="feld" for="organisation">Name der Organisation</label>
+      <input class="text" id="organisation" autocomplete="organization">
+      <label class="feld" for="email">Firmen-E-Mail des Admin-Platzes</label>
+      <input class="text" id="email" type="email" autocomplete="email">
+      <label class="feld" for="kurz">Kurzname (Kleinbuchstaben, Ziffern, Bindestrich)</label>
+      <input class="text" id="kurz" autocapitalize="none" spellcheck="false">
+    </section>
+
+    <section class="karte" aria-labelledby="t-zahlart" style="margin-top:16px">
+      <h2 id="t-zahlart">3 · Zahlart</h2>
+      <div class="zahlart" role="radiogroup" aria-labelledby="t-zahlart">
+        <label class="haken"><input type="radio" name="zahlart" value="karte" checked> <span>Karte</span></label>
+        <label class="haken"><input type="radio" name="zahlart" value="sepa"> <span>SEPA-Lastschrift</span></label>
+        <label class="haken"><input type="radio" name="zahlart" value="rechnung"> <span>Rechnung, immer Vorkasse: Einrichtung und Leistung beginnen nach Zahlungseingang</span></label>
+      </div>
+      <div id="rechnungsfelder" hidden>
+        <label class="feld" for="strasse">Straße und Hausnummer</label><input class="text" id="strasse" autocomplete="street-address">
+        <label class="feld" for="plz">Postleitzahl</label><input class="text" id="plz" autocomplete="postal-code">
+        <label class="feld" for="ort">Ort</label><input class="text" id="ort" autocomplete="address-level2">
+        <label class="feld" for="ust_id">USt-IdNr. (optional)</label><input class="text" id="ust_id">
+      </div>
+    </section>
+
+    <section class="karte" aria-labelledby="t-vertrag" style="margin-top:16px">
+      <h2 id="t-vertrag">4 · Vertrag per Klick</h2>
+      <label class="haken"><input type="checkbox" id="unternehmer"> <span>Ich bestelle für ein Unternehmen, eine juristische Person des öffentlichen Rechts oder einen eingetragenen Verein, nicht als Verbraucher.</span></label>
+      <label class="haken"><input type="checkbox" id="agb"> <span>Ich habe die <a href="bedingungen.html" target="_blank" rel="noopener">Lizenz- und Nutzungsbedingungen</a> und die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und nehme sie an.</span></label>
+      <label class="haken"><input type="checkbox" id="avv"> <span>Ich nehme die <a href="bedingungen.html#avv" target="_blank" rel="noopener">Auftragsverarbeitung</a> an.</span></label>
+      <label class="haken"><input type="checkbox" id="bestellschein"> <span>Ich bestätige den Bestellschein mit den Plätzen und Kosten rechts.</span></label>
     </section>
   </div>
 
   <aside class="seite">
     <section class="summe" aria-labelledby="t-summe" aria-live="polite">
-      <h2 id="t-summe">Ihre Bestellung, 12 Monate</h2>
-      <div class="zeile"><span>Grundentgelt</span><span>490 € × 12</span></div>
+      <h2 id="t-summe">Ihre Bestellung</h2>
+      <div class="zeile"><span>Grundentgelt</span><span>490 € / Monat</span></div>
       <div class="zeile"><span id="z-plaetze">Plätze</span><span id="v-plaetze">–</span></div>
-      <div class="zeile"><span>Netto je Monat</span><span id="v-monat">–</span></div>
-      <div class="zeile"><span>Netto je Jahr</span><span id="v-netto">–</span></div>
-      <div class="zeile"><span>Umsatzsteuer 19 %</span><span id="v-ust">–</span></div>
-      <div class="zeile gross"><span>Heute fällig</span><span id="v-brutto">–</span></div>
-      <p class="klein">Zahlung jährlich im Voraus per Kreditkarte über Stripe. Kartendaten erhalten wir nie. Die Einrichtung (1.900 € einmalig, zuzüglich Fremdkosten × 1,3) und Fremdleistungen werden gesondert vor ihrer Auslösung berechnet.</p>
+      <div class="zeile"><span>Lizenz netto je Monat</span><span id="v-monat">–</span></div>
+      <div class="zeile"><span>Einrichtung einmalig netto</span><span>1.900,00 €</span></div>
+      <div id="vorschau" hidden>
+        <table class="vorschau-tabelle" aria-label="Kostenübersicht des Servers"><tbody id="vorschau-zeilen"></tbody></table>
+      </div>
+      <div class="zeile gross"><span>Heute fällig (brutto)</span><span id="v-brutto">–</span></div>
+      <p class="klein">Laufende Entgelte zahlen Sie im Voraus, die Einrichtung und jede Fremdleistung (Selbstkosten + 30 %) vor ihrer Auslösung. Kartendaten erhalten wir nie. Alle Beträge netto zuzüglich 19 % Umsatzsteuer; maßgeblich ist die Kostenübersicht, die der Server nach Ihrer Eingabe berechnet.</p>
     </section>
     <div id="fehler" class="meldung" role="alert" hidden style="margin-top:16px"></div>
-    <button id="zahlen" class="btn" type="submit" disabled>Weiter zur Zahlung</button>
+    <button id="zahlen" class="btn" type="submit" disabled>Verbindlich bestellen</button>
     <p style="font-size:14px;color:var(--ink-2)">Lieber erst sprechen? <a href="mailto:kontakt@neufound.ai?subject=Gespr%C3%A4ch%20anfragen">Gespräch anfragen</a></p>
   </aside>
 </form>
 </div></main>
 <footer><div class="wrap"><a href="index.html">Startseite</a><a href="bedingungen.html">Bedingungen</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></footer>
-<script>
-(function () {
-  var DIENST = "https://neufound-checkout.neufound.workers.dev";
-  var PREIS = { admin: 129, nutzer: 79, leser: 29 }, GRUND = 490, UST = 0.19;
-  var form = document.getElementById("bestellung"), knopf = document.getElementById("zahlen"), fehler = document.getElementById("fehler");
-  var eur = function (v) { return v.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €"; };
-  function zahl(id) { var v = Number(document.getElementById(id).value); return Number.isInteger(v) ? v : NaN; }
-  function werte() { return { admin: zahl("admin"), nutzer: zahl("nutzer"), leser: zahl("leser") }; }
-  function gueltig(w) {
-    var alle = [w.admin, w.nutzer, w.leser];
-    return alle.every(function (n) { return Number.isInteger(n) && n >= 0 && n <= 500; }) && w.admin >= 1 && w.admin + w.nutzer + w.leser <= 500;
+<script type="module">
+import { KONFIG } from "./konfig.js";
+import { lizenzMonat, pruefe, holeVorschau, registriere, bereit } from "./signup.js";
+const $ = (id) => document.getElementById(id);
+const eur = (v) => Number(v).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+const zahl = (id) => { const v = Number($(id).value); return Number.isInteger(v) ? v : NaN; };
+const daten = () => ({
+  admin: zahl("admin"), nutzer: zahl("nutzer"), leser: zahl("leser"),
+  zahlart: document.querySelector("input[name=zahlart]:checked").value,
+  organisation: $("organisation").value, email: $("email").value, kurz: $("kurz").value,
+  strasse: $("strasse").value, plz: $("plz").value, ort: $("ort").value, ust_id: $("ust_id").value,
+  agb: $("agb").checked, avv: $("avv").checked, bestellschein: $("bestellschein").checked, unternehmer: $("unternehmer").checked,
+});
+const knopf = $("zahlen"), fehler = $("fehler");
+const zeigeFehler = (t) => { fehler.hidden = !t; fehler.textContent = t || ""; };
+const online = bereit(KONFIG);
+$("aus").hidden = online;
+let vorschauNr = 0, angebot = null;
+
+function plaetzeOk(d) { return [d.admin, d.nutzer, d.leser].every((n) => Number.isInteger(n) && n >= 0 && n <= 500) && d.admin >= 1 && d.admin + d.nutzer + d.leser <= 500; }
+
+function anzeigen() {
+  const d = daten(), ok = plaetzeOk(d);
+  const monat = ok ? lizenzMonat(d) : 0, n = ok ? d.admin + d.nutzer + d.leser : 0;
+  $("z-plaetze").textContent = ok ? n + (n === 1 ? " Platz" : " Plätze") : "Plätze";
+  $("v-plaetze").textContent = ok ? eur(monat - 490) : "–";
+  $("v-monat").textContent = ok ? eur(monat) : "–";
+  $("rechnungsfelder").hidden = d.zahlart !== "rechnung";
+  const g = pruefe(d);
+  knopf.disabled = !(online && g.ok && angebot);
+  if (!ok) zeigeFehler("Mindestens ein Admin-Platz, je Platzart 0 bis 500, zusammen höchstens 500.");
+  else if (fehler.textContent.startsWith("Mindestens ein Admin")) zeigeFehler(null);
+  return ok;
+}
+
+// Schritt 1: Kostenübersicht vom Server, bei jeder Änderung der Plätze neu (jüngste Antwort gilt)
+async function vorschauLaden() {
+  const d = daten(); angebot = null; $("vorschau").hidden = true; $("v-brutto").textContent = "–";
+  if (!online || !plaetzeOk(d)) { anzeigen(); return; }
+  const nr = ++vorschauNr;
+  const v = await holeVorschau(fetch.bind(window), KONFIG, d).catch(() => ({ fehler: "Keine Verbindung zum Dienst. Bitte später erneut versuchen." }));
+  if (nr !== vorschauNr) return;
+  if (v.fehler) { zeigeFehler(v.fehler); anzeigen(); return; }
+  angebot = v.angebot; zeigeFehler(null);
+  const s = v.summen, tb = $("vorschau-zeilen"); tb.textContent = "";
+  for (const k of ["einmalig", "monatlich", "modell", "faellig_jetzt"]) {
+    if (!s[k]) continue;
+    const tr = document.createElement("tr"), a = document.createElement("td"), b = document.createElement("td");
+    a.textContent = (s[k].bezeichnung || k) + " (netto)"; b.textContent = eur(s[k].netto_eur); tr.append(a, b); tb.append(tr);
   }
-  function rechnen() {
-    var w = werte(), ok = gueltig(w);
-    var anzahl = ok ? w.admin + w.nutzer + w.leser : 0;
-    var monat = ok ? GRUND + w.admin * PREIS.admin + w.nutzer * PREIS.nutzer + w.leser * PREIS.leser : 0;
-    var netto = monat * 12, ust = Math.round(netto * UST * 100) / 100;
-    document.getElementById("z-plaetze").textContent = ok ? anzahl + (anzahl === 1 ? " Platz" : " Plätze") : "Plätze";
-    document.getElementById("v-plaetze").textContent = ok ? eur((monat - GRUND) * 12) : "–";
-    document.getElementById("v-monat").textContent = ok ? eur(monat) : "–";
-    document.getElementById("v-netto").textContent = ok ? eur(netto) : "–";
-    document.getElementById("v-ust").textContent = ok ? eur(ust) : "–";
-    document.getElementById("v-brutto").textContent = ok ? eur(netto + ust) : "–";
-    var bereit = ok && document.getElementById("b2b").checked && document.getElementById("bedingungen").checked;
-    knopf.disabled = !bereit;
-    knopf.textContent = ok ? "Weiter zur Zahlung · " + eur(netto + ust) : "Weiter zur Zahlung";
-    if (!ok) zeigeFehler("Mindestens ein Admin-Platz, je Platzart 0 bis 500, zusammen höchstens 500."); else zeigeFehler(null);
-  }
-  function zeigeFehler(t) { fehler.hidden = !t; fehler.textContent = t || ""; }
-  Array.prototype.forEach.call(document.querySelectorAll(".zaehler"), function (z) {
-    var feld = z.querySelector("input"), min = Number(z.getAttribute("data-min")), k = z.querySelectorAll("button");
-    k[0].addEventListener("click", function () { feld.value = Math.max(min, (Number(feld.value) || 0) - 1); rechnen(); });
-    k[1].addEventListener("click", function () { feld.value = Math.min(500, (Number(feld.value) || 0) + 1); rechnen(); });
-    feld.addEventListener("input", rechnen);
-  });
-  document.getElementById("b2b").addEventListener("change", rechnen);
-  document.getElementById("bedingungen").addEventListener("change", rechnen);
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    if (knopf.disabled) return;
-    var w = werte();
-    knopf.disabled = true; knopf.textContent = "Zahlungsseite wird geöffnet …"; zeigeFehler(null);
-    fetch(DIENST + "/checkout", {
-      method: "POST", headers: { "content-type": "application/json" },
-      body: JSON.stringify({ admin: w.admin, nutzer: w.nutzer, leser: w.leser, b2b: true, bedingungen: true })
-    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
-      .then(function (a) {
-        if (a.ok && a.j.url) { window.location.assign(a.j.url); return; }
-        zeigeFehler(a.j.fehler || "Die Zahlungsseite ließ sich nicht öffnen."); rechnen();
-      })
-      .catch(function () { zeigeFehler("Keine Verbindung zum Zahlungsdienst. Bitte später erneut versuchen oder an kontakt@neufound.ai schreiben."); rechnen(); });
-  });
-  if (/[?&]abgebrochen=1/.test(location.search)) document.getElementById("abgebrochen").hidden = false;
-  fetch(DIENST + "/modus").then(function (r) { return r.json(); }).then(function (j) {
-    if (j.modus !== "live") document.getElementById("testmodus").hidden = false;
-  }).catch(function () {});
-  rechnen();
-})();
+  $("vorschau").hidden = false;
+  if (s.faellig_jetzt) $("v-brutto").textContent = eur(s.faellig_jetzt.brutto_eur);
+  anzeigen();
+}
+
+document.querySelectorAll(".zaehler").forEach((z) => {
+  const feld = z.querySelector("input"), min = Number(z.dataset.min), k = z.querySelectorAll("button");
+  k[0].addEventListener("click", () => { feld.value = Math.max(min, (Number(feld.value) || 0) - 1); anzeigen(); vorschauLaden(); });
+  k[1].addEventListener("click", () => { feld.value = Math.min(500, (Number(feld.value) || 0) + 1); anzeigen(); vorschauLaden(); });
+  feld.addEventListener("change", () => { anzeigen(); vorschauLaden(); });
+  feld.addEventListener("input", anzeigen);
+});
+document.querySelectorAll("input.text, input[type=checkbox], input[name=zahlart]").forEach((e) => e.addEventListener("input", anzeigen));
+document.querySelectorAll("input[name=zahlart]").forEach((e) => e.addEventListener("change", anzeigen));
+
+// Schritt 2: Vertragsklick, Registrierung, Zahlung
+$("bestellung").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (knopf.disabled || !angebot) return;
+  knopf.disabled = true; knopf.textContent = "Bestellung wird angelegt …"; zeigeFehler(null);
+  const r = await registriere(fetch.bind(window), KONFIG, daten(), angebot).catch(() => ({ fehler: "Keine Verbindung zum Dienst. Bitte später erneut versuchen oder an kontakt@neufound.ai schreiben." }));
+  knopf.textContent = "Verbindlich bestellen";
+  if (r.fehler) { zeigeFehler(r.fehler); anzeigen(); return; }
+  if (r.art === "zahlung") { window.location.assign(r.weiter); return; }
+  $("rechnung-link").href = r.weiter; $("rechnung-ok").hidden = false; $("bestellung").hidden = true;
+  window.scrollTo(0, 0);
+});
+
+if (/[?&]abgebrochen=1/.test(location.search)) $("abgebrochen").hidden = false;
+anzeigen(); vorschauLaden();
 </script>
 </body>
 </html>
