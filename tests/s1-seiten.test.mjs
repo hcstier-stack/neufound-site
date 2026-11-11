@@ -11,7 +11,7 @@ const text = Object.fromEntries(seiten.map((f) => [f, readFileSync(join(wurzel, 
 const alle = Object.values(text).join('\n');
 const zaehle = (re) => (alle.match(re) || []).length;
 
-test('acht Seiten vorhanden', () => assert.equal(seiten.length, 8));
+test('vierzehn Seiten vorhanden (acht Bestand, fünf Produktseiten, Erste Schritte)', () => assert.equal(seiten.length, 14));
 test('Einrichtung 1.900 mindestens einmal', () => assert.ok(zaehle(/1\.900/g) >= 1));
 for (const p of ['490', '129', '79', '29'])
   test(`Preis ${p} vorhanden`, () => assert.ok(zaehle(new RegExp(`${p} €`, 'g')) >= 1));

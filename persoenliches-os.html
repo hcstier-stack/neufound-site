@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Hans Stier">
+<meta name="robots" content="noindex">
+<meta name="description" content="Persönliches OS: der Assistent, der Ihre eigene Ablage, Ihre Mails und Ihren Kalender durchsucht. Derzeit Warteliste.">
+<title>Persönliches OS für Einzelne – Neufound</title>
+<link rel="stylesheet" href="recht.css">
+<link rel="stylesheet" href="produkt.css">
+</head>
+<body>
+<header><div class="wrap"><a href="index.html"><span class="neu">neu</span><span class="found">found</span></a><nav class="oben"><a href="produkte.html">Produkte</a><a href="preise.html">Preise</a><a href="index.html#kontakt">Kontakt</a></nav></div></header>
+<main><div class="wrap">
+<p class="eyebrow">Produkt</p>
+<h1>Persönliches OS für Einzelne.</h1>
+<p class="status offen">Warteliste</p>
+<p class="lead">Ein Assistent für Ihre eigenen Unterlagen: durchsucht Ablage, Mails und Kalender und legt jede Antwort mit Quelle und Datum vor.</p>
+<ul class="zeilen">
+  <li><b>Eine Suche über alles Eigene:</b> <span>Dateien, Mails, Kalender, frühere Gespräche mit dem Assistenten.</span></li>
+  <li><b>Merkt sich, was Sie ihm sagen,</b> <span>und berichtigt es nur durch einen neuen Eintrag mit Verweis, nie durch Überschreiben.</span></li>
+  <li><b>Eigenes Projekt je Nutzer,</b> <span>getrennt von jedem anderen. Export jederzeit.</span></li>
+</ul>
+<p class="note">Warum eine Warteliste: Preis und Starttermin sind noch nicht festgelegt. Das Angebot richtet sich an Unternehmer und Organisationen, nicht an Verbraucher.</p>
+<h2>Auf die Warteliste</h2>
+<p>Wir melden uns einmal persönlich, sobald das persönliche OS bestellbar ist. Mehr nicht; eine Verpflichtung entsteht nicht.</p>
+<p id="wl-aus" class="hinweis">Das Formular ist noch nicht freigeschaltet. Bitte schreiben Sie an <a href="mailto:kontakt@neufound.ai?subject=Warteliste%20das%20pers%C3%B6nliche%20OS">kontakt@neufound.ai</a>.</p>
+<form id="wl" class="warteliste" data-produkt="os-a" hidden>
+  <label>Organisation <input type="text" name="firma" required maxlength="200" autocomplete="organization"></label>
+  <label>Name <input type="text" name="name" maxlength="200" autocomplete="name"></label>
+  <label>E-Mail <input type="email" name="email" required maxlength="254" autocomplete="email"></label>
+  <label>Worum geht es? (freiwillig) <textarea name="nachricht" rows="3" maxlength="3900"></textarea></label>
+  <div class="falle" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+  <label class="haken"><input type="checkbox" name="einwilligung" value="ja" required> <span>Meine Angaben dürfen gespeichert werden, damit Sie sich bei mir melden. Einzelheiten stehen in der <a href="datenschutz.html">Datenschutzerklärung</a>.</span></label>
+  <button class="btn" type="submit">Eintragen</button>
+  <p class="meldung" id="wl-meldung" role="status"></p>
+</form>
+<script type="module">
+import { KONFIG } from "./konfig.js";
+import { wartelisteSenden } from "./warteliste.js";
+const f = document.getElementById("wl"), m = document.getElementById("wl-meldung");
+if (KONFIG.LEAD_URL) {
+  f.hidden = false; document.getElementById("wl-aus").hidden = true;
+  const code = new URLSearchParams(location.search).get("q");
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    m.textContent = "Wird gesendet.";
+    const d = new FormData(f);
+    const eingabe = { firma: d.get("firma"), name: d.get("name"), email: d.get("email"), nachricht: d.get("nachricht"), einwilligung: d.get("einwilligung") === "ja", website: d.get("website") };
+    const r = await wartelisteSenden(fetch.bind(window), KONFIG, f.dataset.produkt, eingabe, location.pathname, code).catch(() => ({ fehler: "Das hat nicht geklappt. Bitte schreiben Sie an kontakt@neufound.ai." }));
+    if (r.ok) { f.reset(); m.textContent = "Danke, Sie stehen auf der Warteliste. Ich melde mich persönlich."; } else m.textContent = r.fehler;
+  });
+}
+</script>
+</div></main>
+<footer><div class="wrap"><a href="index.html">Startseite</a><a href="produkte.html">Produkte</a><a href="preise.html">Preise</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="widerspruch.html">Widerspruch</a></div></footer>

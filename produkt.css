@@ -1,0 +1,40 @@
+/* Produktseiten, Übersicht und Erste Schritte: ergänzt recht.css, gleiche Farben, ruhig, eine Handlung je Seite */
+:root{--paper-2:#F4F5F7;--copper-2:#F3E4D8}
+.wrap{max-width:860px}
+.eyebrow{font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:var(--copper);font-weight:600;margin:0 0 10px}
+.lead{font-size:19px;color:var(--ink-2);max-width:60ch;margin:0 0 28px}
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+nav.oben{display:flex;gap:18px;font-size:15px}
+nav.oben a{color:var(--ink);text-decoration:none;font-weight:500;font-size:15px;letter-spacing:0}
+.status{display:inline-block;font-size:13px;font-weight:600;padding:4px 10px;border:1px solid var(--line);background:var(--paper-2);margin:0 0 18px}
+.status.offen{background:var(--copper-2);border-color:var(--copper)}
+.zeilen{list-style:none;margin:0 0 24px;padding:0;border-top:2px solid var(--ink)}
+.zeilen li{padding:14px 0;border-bottom:1px solid var(--line);margin:0}
+.zeilen b{font-weight:600}.zeilen span{color:var(--ink-2)}
+.btn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;font-weight:600;padding:14px 26px;border:2px solid var(--ink);margin:6px 8px 6px 0;font:inherit;font-weight:600;cursor:pointer}
+.btn:hover,.btn:focus-visible{background:var(--copper);border-color:var(--copper)}
+.btn.ghost{background:transparent;color:var(--ink)}.btn.ghost:hover{color:#fff}
+.karten{display:grid;gap:16px;grid-template-columns:1fr;margin:0 0 28px}
+.karte{border:1px solid var(--line);border-left:4px solid var(--copper);padding:20px 22px;background:#fff}
+.karte h2{margin:0 0 4px;font-size:21px}
+.karte p{color:var(--ink-2);font-size:16px;margin:0 0 12px}
+.karte a.mehr{font-weight:600}
+form.warteliste{display:grid;gap:12px;max-width:520px;margin:8px 0 24px}
+form.warteliste[hidden]{display:none}
+form.warteliste label{display:grid;gap:4px;font-size:15px;font-weight:500}
+form.warteliste input[type=text],form.warteliste input[type=email],form.warteliste textarea{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:2px;background:#fff;width:100%}
+form.warteliste label.haken{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:var(--ink-2)}
+form.warteliste .falle{position:absolute;left:-9999px;height:1px;overflow:hidden}
+form.warteliste button{justify-self:start}
+.meldung{font-size:15px;min-height:1.4em;margin:0}
+ol.schritte{list-style:none;counter-reset:s;margin:0 0 28px;padding:0;border-top:2px solid var(--ink)}
+ol.schritte li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:0 10px;padding:16px 0;border-bottom:1px solid var(--line);margin:0}
+ol.schritte li::before{content:counter(s);font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;color:var(--copper);font-size:24px;font-weight:500;line-height:1.1}
+ol.schritte b{display:block;font-size:18px;margin-bottom:2px}
+ol.schritte span{color:var(--ink-2)}
+.kacheln{display:grid;gap:12px;grid-template-columns:1fr;margin:0 0 28px}
+.kachel{border:1px solid var(--line);padding:18px 20px;background:var(--paper-2)}
+.kachel b{display:block;font-size:18px;margin-bottom:4px}.kachel span{color:var(--ink-2);font-size:16px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 16px}
+@media (min-width:700px){.karten{grid-template-columns:1fr 1fr}.kacheln{grid-template-columns:repeat(3,1fr)}}
+.note{font-size:15px;color:var(--ink-2);max-width:66ch}
