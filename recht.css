@@ -21,3 +21,4 @@ ul{margin:0 0 1em;padding-left:1.2em}li{margin:0 0 .4em}
 .tab-rahmen{overflow-x:auto}
 footer{background:var(--ink);color:#C9D0D8;padding:22px 0;font-size:14px}
 footer a{color:#fff;margin-right:16px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:4px 0}
