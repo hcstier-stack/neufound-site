@@ -29,13 +29,26 @@ export function pruefe(f) {
   return { ok: true };
 }
 
+const QUELLCODE = /^[A-Za-z0-9]{5}$/;
+const LEAD_LINK = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.[0-9a-f]{16}$/;
+
+/** Herkunft aus der Adresse (?q=<Quellcode>&lead=<signierter Lead-Link>), nur wohlgeformte Werte (Format der Funktion registrierung). Nie ein Fehler: Unbrauchbares entfällt. */
+export function herkunftAusUrl(suche) {
+  const p = new URLSearchParams(suche || "");
+  const q = (p.get("q") || "").trim(), lead = (p.get("lead") || "").trim().toLowerCase();
+  const h = {};
+  if (QUELLCODE.test(q)) h.quellcode = q.toUpperCase();
+  if (LEAD_LINK.test(lead)) h.lead = lead;
+  return h;
+}
+
 /** Körper für Schritt 1 (Kostenvorschau). */
 export function vorschauKoerper(f) {
   return { vorschau: true, produkt: "os-b", plaetze: f.nutzer, plaetze_admin: f.admin, plaetze_leser: f.leser };
 }
 
 /** Körper für Schritt 2 (Registrierung mit Vertragsklick und angenommenem Angebot). */
-export function registrierungKoerper(f, konfig, angebot) {
+export function registrierungKoerper(f, konfig, angebot, herkunft = {}) {
   const k = {
     produkt: "os-b",
     email: f.email.trim(), organisation: f.organisation.trim(), kurz: f.kurz.trim().toLowerCase(),
@@ -45,6 +58,8 @@ export function registrierungKoerper(f, konfig, angebot) {
     angebot: { id: angebot.id, hash: angebot.hash },
     landingpage: "/bestellen.html",
   };
+  if (herkunft.quellcode) k.quellcode = herkunft.quellcode;
+  if (herkunft.lead) k.lead = herkunft.lead;
   if (f.zahlart === "rechnung") {
     k.anschrift = { strasse: f.strasse.trim(), plz: f.plz.trim(), ort: f.ort.trim(), land: "DE" };
     if (f.ust_id && f.ust_id.trim()) k.ust_id = f.ust_id.trim();
@@ -67,10 +82,10 @@ export async function holeVorschau(fetchFn, konfig, f) {
 }
 
 /** Schritt 2: Registrierung. Liefert {weiter: <Adresse>, art: "zahlung"|"rechnung"} oder {fehler}. */
-export async function registriere(fetchFn, konfig, f, angebot) {
+export async function registriere(fetchFn, konfig, f, angebot, herkunft = {}) {
   const g = pruefe(f);
   if (!g.ok) return { fehler: g.fehler };
-  const a = await post(fetchFn, konfig.VERTRIEB_URL, registrierungKoerper(f, konfig, angebot));
+  const a = await post(fetchFn, konfig.VERTRIEB_URL, registrierungKoerper(f, konfig, angebot, herkunft));
   if (!a.ok) return { fehler: a.j.fehler || "Die Anmeldung ließ sich nicht abschließen." };
   if (a.j.url) return { weiter: a.j.url, art: "zahlung" };
   if (a.j.rechnung_url) return { weiter: a.j.rechnung_url, art: "rechnung", fremdkosten: a.j.fremdkosten_rechnung || null };

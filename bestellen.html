@@ -140,7 +140,7 @@ label.feld{display:block;font-size:14px;color:var(--ink-2);margin:0 0 4px}
 <footer><div class="wrap"><a href="index.html">Startseite</a><a href="preise.html">Preise</a><a href="bedingungen.html">Bedingungen</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div></footer>
 <script type="module">
 import { KONFIG } from "./konfig.js";
-import { lizenzMonat, pruefe, holeVorschau, registriere, bereit } from "./signup.js";
+import { lizenzMonat, pruefe, holeVorschau, registriere, bereit, herkunftAusUrl } from "./signup.js";
 const $ = (id) => document.getElementById(id);
 const eur = (v) => Number(v).toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
 const zahl = (id) => { const v = Number($(id).value); return Number.isInteger(v) ? v : NaN; };
@@ -154,6 +154,12 @@ const daten = () => ({
 const knopf = $("zahlen"), fehler = $("fehler");
 const zeigeFehler = (t) => { fehler.hidden = !t; fehler.textContent = t || ""; };
 const online = bereit(KONFIG);
+// Herkunft (Kampagnen-Quellcode q, Lead-Link lead): aus der Adresse, sonst aus der Sitzung (überlebt den Rücksprung vom abgebrochenen Checkout); kein Cookie
+let herkunft = herkunftAusUrl(location.search);
+try {
+  if (herkunft.quellcode || herkunft.lead) sessionStorage.setItem("nf_herkunft", JSON.stringify(herkunft));
+  else { const s = JSON.parse(sessionStorage.getItem("nf_herkunft") || "{}"); herkunft = herkunftAusUrl("?" + new URLSearchParams({ q: s.quellcode || "", lead: s.lead || "" })); }
+} catch { /* ohne Speicher: nur die Adresse zählt */ }
 $("aus").hidden = online;
 let vorschauNr = 0, angebot = null;
 
@@ -208,7 +214,7 @@ $("bestellung").addEventListener("submit", async (e) => {
   e.preventDefault();
   if (knopf.disabled || !angebot) return;
   knopf.disabled = true; knopf.textContent = "Bestellung wird angelegt …"; zeigeFehler(null);
-  const r = await registriere(fetch.bind(window), KONFIG, daten(), angebot).catch(() => ({ fehler: "Keine Verbindung zum Dienst. Bitte später erneut versuchen oder an kontakt@neufound.ai schreiben." }));
+  const r = await registriere(fetch.bind(window), KONFIG, daten(), angebot, herkunft).catch(() => ({ fehler: "Keine Verbindung zum Dienst. Bitte später erneut versuchen oder an kontakt@neufound.ai schreiben." }));
   knopf.textContent = "Verbindlich bestellen";
   if (r.fehler) { zeigeFehler(r.fehler); anzeigen(); return; }
   if (r.art === "zahlung") { window.location.assign(r.weiter); return; }
