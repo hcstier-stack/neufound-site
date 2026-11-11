@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://parlvnbghyzktutrarza.supabase.co; img-src 'self' data:; style-src 'self'; script-src 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin">
+<meta name="author" content="Hans Stier">
+<title>Gespräch anfragen</title>
+<link rel="stylesheet" href="/lp/lp.css">
+</head>
+<body data-zielgruppe="immo">
+<header class="kopf">
+<div class="wrap">
+<a class="marke" href="/" aria-label="Neufound, zur Startseite"><svg viewBox="20 28 110 84" aria-hidden="true" focusable="false"><defs><clipPath id="nf-lens"><circle cx="90" cy="70" r="38"/></clipPath></defs><circle cx="62" cy="70" r="38" fill="none" stroke="#1F2A37" stroke-width="5"/><circle cx="90" cy="70" r="38" fill="none" stroke="#1F2A37" stroke-width="5"/><circle cx="62" cy="70" r="38" fill="#B8672E" clip-path="url(#nf-lens)"/></svg><span class="wm"><span class="neu">neu</span><span class="found">found</span></span></a>
+</div>
+</header>
+<main>
+<div class="wrap">
+<div class="hero">
+<p id="begruessung" class="gruss" hidden></p>
+<p class="eyebrow"><span data-produktname>Neufound</span> · <span data-titel>Für Projektentwickler, Bestandshalter, Hausverwaltungen und Bauträger</span></p>
+<h1>Alles, was Ihre Organisation weiß. <b>An einem Ort.</b></h1>
+<p class="unterzeile"><span>Jeder Treffer mit Quelle und Datum.</span></p>
+<p class="text">Ein Assistent durchsucht Postfächer, Chat, Ablage und Besprechungen Ihrer Organisation und nennt zu jeder Antwort die Quelle.</p>
+<a class="btn" href="#gespraech">Gespräch anfragen</a>
+</div>
+
+<section aria-labelledby="h-nutzen">
+<h2 id="h-nutzen">Was Sie davon haben</h2>
+<ul class="zeilen">
+<li><b>Finden statt suchen</b><span>Eine Frage, ein Ort: Der Assistent durchsucht Postfächer, Chat, Dateiablage und Besprechungen. Sie prüfen nach, statt zu vertrauen.</span></li>
+<li><b>Rechnungen und Planstände im Blick</b><span>Rechnungen von Eingang bis Zahlliste und der jüngste Planstand je Plan lassen sich abfragen, jeweils mit Quelle und Datum. Welche Module Sie nutzen, legt der Bestellschein fest.</span></li>
+<li><b>Aufgaben und Fristen an einer Stelle</b><span>Aufgaben und Fristen aus Ihren Vorgängen laufen zusammen und ohne Sprachmodell.</span></li>
+</ul>
+</section>
+
+<section aria-labelledby="h-gleich">
+<h2 id="h-gleich">Was gleich bleibt</h2>
+<div class="gleich">
+<div><b>Liest nur</b><span>Der Assistent liest Ihre Quellen. Er sendet, ändert oder löscht dort nichts.</span></div>
+<div><b>Eigene Datenbank</b><span>Jeder Kunde hat eine eigene Datenbank-Instanz, getrennt von allen anderen.</span></div>
+<div><b>Export jederzeit</b><span>Ihre Daten als CSV oder JSON, auch bei offener Zahlung.</span></div>
+<div><b>Kosten je Antwort sichtbar</b><span>Suchen, Lesen, Aufgaben und Fristen laufen ohne Sprachmodell. Ein Sprachmodell wird nur je Anfrage und mit Kostenanzeige zugeschaltet.</span></div>
+</div>
+</section>
+
+<section aria-labelledby="h-ablauf">
+<h2 id="h-ablauf">So läuft es ab</h2>
+<ol class="schritte">
+<li><div><b>Gespräch.</b><span>Fünfzehn Minuten: Sie schildern, wo bei Ihnen Wissen verloren geht.</span></div></li>
+<li><div><b>Vorführung an Musterdaten.</b><span>Wir zeigen den Assistenten an Beispieldaten und beantworten Ihre Fragen. Danach entscheiden Sie, ob Sie weitermachen.</span></div></li>
+<li><div><b>Einrichtung.</b><span>Sie bestimmen, welche Postfächer, Kanäle und Ordner gelesen werden und wer was sieht. Sie bestätigen den Vertrag per Klick und zahlen per Karte, SEPA-Lastschrift oder auf Rechnung (Vorkasse, Freischaltung nach Zahlungseingang).</span></div></li>
+<li><div><b>Betrieb.</b><span>Sie fragen, der Assistent antwortet mit Quelle, Datum und den Kosten der Antwort.</span></div></li>
+</ol>
+<p class="fussnote">Das Entgelt besteht aus einem Grundentgelt und einem Entgelt je Nutzer, jeweils netto zuzüglich Umsatzsteuer. Die Beträge nennen wir im Gespräch, vor jeder Bestellung und ohne Verpflichtung.</p>
+</section>
+
+<section id="gespraech" aria-labelledby="h-form">
+<h2 id="h-form">Gespräch anfragen</h2>
+<p>Fünfzehn Minuten genügen. Ich melde mich innerhalb eines Werktags.</p>
+<div id="lead-meldung" class="meldung" role="status" aria-live="polite" tabindex="-1" hidden></div>
+<form id="lead-formular" class="formular" novalidate>
+<label>Ihr Name
+<input name="name" type="text" required maxlength="120" autocomplete="name"></label>
+<label>Firma oder Organisation
+<input name="firma" type="text" required maxlength="160" autocomplete="organization"></label>
+<label>E-Mail-Adresse
+<input name="email" type="email" required maxlength="200" autocomplete="email" inputmode="email"></label>
+<label>Telefon (optional)
+<input name="telefon" type="tel" maxlength="50" autocomplete="tel"></label>
+<label>Worum geht es? (optional)
+<textarea name="nachricht" rows="3" maxlength="2000"></textarea></label>
+<div class="honigtopf" aria-hidden="true"><label>Bitte leer lassen<input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+<!-- Einwilligungstext: Fassung kf-2026-1 aus T4 Nr. 1 (P25), Verantwortliche bleibt die AINO Betriebsmedizin GmbH. -->
+<label class="haken"><input name="einwilligung" type="checkbox" required>
+<span>Ich habe die <a href="/datenschutz.html">Datenschutzhinweise</a> gelesen. Die AINO Betriebsmedizin GmbH darf mich zu dieser Anfrage per E-Mail und, falls angegeben, telefonisch kontaktieren.</span></label>
+<button class="btn" type="submit">Gespräch anfragen</button>
+</form>
+<div id="lead-danke" hidden></div>
+<p class="hinweis">Mit Ihrer Anfrage speichern wir, über welchen Code und von welcher Website Sie zu uns gekommen sind. Diese Seite legt auf Ihrem Gerät weder Cookies noch andere Daten ab und lädt keine Inhalte von Dritten.</p>
+<p class="hinweis"><span data-produktname>Neufound</span> wird nur an Unternehmen, Organisationen und eingetragene Vereine abgegeben. Sie erhalten keinen Newsletter, solange Sie ihn nicht gesondert bestellen.</p>
+</section>
+</div>
+</main>
+<footer>
+<div class="wrap">
+<span>© 2026 Neufound · AINO Betriebsmedizin GmbH, Berlin · Produkt und Marke: HCS Investment GmbH</span>
+<span><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></span>
+</div>
+</footer>
+<script src="/lp/konfig.js"></script>
+<script src="/lp/lp.js"></script>
+</body>
+</html>
