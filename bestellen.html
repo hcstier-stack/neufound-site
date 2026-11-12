@@ -54,7 +54,7 @@ header .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
 <h1>Neufound für Ihren Betrieb.</h1>
 <p class="lead">Plätze wählen, Kosten sehen, per Kreditkarte bezahlen. Nach dem Zahlungseingang richten wir Ihr eigenes, abgeschottetes Projekt ein; der Admin-Platz bekommt die Einladung per E-Mail.</p>
 
-<div id="testmodus" class="meldung info" hidden><b>Probebetrieb:</b> Die Zahlungsseite läuft im Testmodus des Zahlungsdienstes. Es wird nichts belastet und kein Vertrag geschlossen. Für eine verbindliche Bestellung schreiben Sie bitte an <a href="mailto:kontakt@neufound.ai?subject=Bestellung">kontakt@neufound.ai</a>.</div>
+<div id="testmodus" class="meldung info" hidden><b>Probebetrieb:</b> Die Zahlungsseite läuft im Testmodus des Zahlungsdienstes. Es wird nichts belastet und kein Vertrag geschlossen. Für eine verbindliche Bestellung schreiben Sie bitte an <a href="mailto:hans@neufound.ai?subject=Bestellung">hans@neufound.ai</a>.</div>
 <div id="abgebrochen" class="meldung info" hidden>Zahlung abgebrochen, es wurde nichts bestellt.</div>
 
 <form id="bestellung" class="raster" novalidate>
@@ -95,7 +95,7 @@ header .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
     </section>
     <div id="fehler" class="meldung" role="alert" hidden style="margin-top:16px"></div>
     <button id="zahlen" class="btn" type="submit" disabled>Weiter zur Zahlung</button>
-    <p style="font-size:14px;color:var(--ink-2)">Lieber erst sprechen? <a href="mailto:kontakt@neufound.ai?subject=Gespr%C3%A4ch%20anfragen">Gespräch anfragen</a></p>
+    <p style="font-size:14px;color:var(--ink-2)">Lieber erst sprechen? <a href="mailto:hans@neufound.ai?subject=Gespr%C3%A4ch%20anfragen">Gespräch anfragen</a></p>
   </aside>
 </form>
 </div></main>
@@ -150,7 +150,7 @@ header .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
         if (a.ok && a.j.url) { window.location.assign(a.j.url); return; }
         zeigeFehler(a.j.fehler || "Die Zahlungsseite ließ sich nicht öffnen."); rechnen();
       })
-      .catch(function () { zeigeFehler("Keine Verbindung zum Zahlungsdienst. Bitte später erneut versuchen oder an kontakt@neufound.ai schreiben."); rechnen(); });
+      .catch(function () { zeigeFehler("Keine Verbindung zum Zahlungsdienst. Bitte später erneut versuchen oder an hans@neufound.ai schreiben."); rechnen(); });
   });
   if (/[?&]abgebrochen=1/.test(location.search)) document.getElementById("abgebrochen").hidden = false;
   fetch(DIENST + "/modus").then(function (r) { return r.json(); }).then(function (j) {
