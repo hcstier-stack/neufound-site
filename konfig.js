@@ -1,0 +1,8 @@
+// Einstellungen der Bestellstrecke. Leer = Online-Bestellung aus, die Seite zeigt den Weg über kontakt@neufound.ai.
+// VERTRIEB_URL: Adresse der Funktion "registrierung" im Vertriebsprojekt aino-vertrieb (https://parlvnbghyzktutrarza.supabase.co/functions/v1/registrierung).
+// Erst eintragen, wenn Hans die Migrationen 0002-0009 in aino-vertrieb freigibt (Messung 12.11.2026: nur 0001 eingespielt, Angebotsfunktionen fehlen) und die Fassungen feststehen.
+// FASSUNG: muss den Umgebungswerten VERTRAG_FASSUNG_AGB / _AVV / _BESTELLSCHEIN der Funktion entsprechen, sonst antwortet sie 400 "veraltet".
+export const KONFIG = {
+  VERTRIEB_URL: "",
+  FASSUNG: { agb: "", avv: "", bestellschein: "" },
+};
